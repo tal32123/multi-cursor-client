@@ -13,7 +13,6 @@ function useCursorTracker() {
 
   useEffect(() => {
     const tabId = uuidv4();
-    sessionStorage.setItem('tabId', tabId);
 
     const updateCursorPosition = (data) => {
       setCursorPositions({
