@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 
-const CursorTracker = () => {
+function CursorTracker() {
   const cursorPositionsRef = useRef({});
   const socket = io('http://localhost:3001');
   const cursorsContainerRef = useRef(null);
@@ -40,7 +40,7 @@ const CursorTracker = () => {
         }
       };
     })();
-    
+
     const handleMouseMove = (event) => {
       throttledEmit(event.clientX, event.clientY);
     };
@@ -53,7 +53,7 @@ const CursorTracker = () => {
     };
   }, [socket]);
 
-  return <div ref={cursorsContainerRef}></div>;
-};
+  return <div ref={cursorsContainerRef} />;
+}
 
 export default CursorTracker;
