@@ -13,11 +13,13 @@ function useCursorTracker() {
 
   useEffect(() => {
     const tabId = uuidv4();
+    sessionStorage.setItem('tabId', tabId);
 
     const updateCursorPosition = (data) => {
-      setCursorPositions({
+      setCursorPositions((prevPositions) => ({
+        ...prevPositions,
         [data.clientId]: { x: data.x, y: data.y },
-      });
+      }));
     };
 
     socket.on('cursorMoved', updateCursorPosition);
