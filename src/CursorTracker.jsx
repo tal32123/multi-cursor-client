@@ -1,45 +1,32 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
+import { v4 as uuidv4 } from 'uuid';
+import _ from 'lodash';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMouse } from '@fortawesome/free-solid-svg-icons';
+import styles from './CursorTracker.module.css';
 
-function CursorTracker() {
-  const cursorPositionsRef = useRef({});
-  const socket = io('http://localhost:3001');
-  const cursorsContainerRef = useRef(null);
+const socket = io('http://localhost:3001');
+
+function useCursorTracker() {
+  const [cursorPositions, setCursorPositions] = useState({});
 
   useEffect(() => {
-    // Generate a unique ID per tab
-    const tabId = sessionStorage.getItem('tabId') || Date.now().toString() + Math.random().toString(36).substr(2, 9);
+    const tabId = sessionStorage.getItem('tabId') || uuidv4();
     sessionStorage.setItem('tabId', tabId);
 
     const updateCursorPosition = (data) => {
-      cursorPositionsRef.current[data.clientId] = { x: data.x, y: data.y };
-      const cursorElement = document.getElementById(`cursor-${data.clientId}`);
-      if (cursorElement) {
-        cursorElement.style.left = `${data.x}px`;
-        cursorElement.style.top = `${data.y}px`;
-      } else {
-        const newCursor = document.createElement('div');
-        newCursor.id = `cursor-${data.clientId}`;
-        newCursor.className = 'cursor';
-        newCursor.style.left = `${data.x}px`;
-        newCursor.style.top = `${data.y}px`;
-        newCursor.innerText = `Cursor ${data.clientId}`;
-        cursorsContainerRef.current.appendChild(newCursor);
-      }
+      setCursorPositions((prevPositions) => ({
+        ...prevPositions,
+        [data.clientId]: { x: data.x, y: data.y },
+      }));
     };
 
     socket.on('cursorMoved', updateCursorPosition);
 
-    const throttledEmit = (() => {
-      let lastEmitTime = Date.now();
-      return (x, y) => {
-        const now = Date.now();
-        if (now - lastEmitTime > 100) {
-          socket.emit('updateCursor', { x, y, clientId: tabId });
-          lastEmitTime = now;
-        }
-      };
-    })();
+    const throttledEmit = _.throttle((x, y) => {
+      socket.emit('updateCursor', { x, y, clientId: tabId });
+    }, 100);
 
     const handleMouseMove = (event) => {
       throttledEmit(event.clientX, event.clientY);
@@ -51,9 +38,33 @@ function CursorTracker() {
       document.removeEventListener('mousemove', handleMouseMove);
       socket.off('cursorMoved', updateCursorPosition);
     };
-  }, [socket]);
+  }, []);
 
-  return <div ref={cursorsContainerRef} />;
+  return cursorPositions;
+}
+
+function CursorTracker() {
+  const cursorPositions = useCursorTracker();
+
+  return (
+    <div>
+      {Object.entries(cursorPositions).map(([clientId, position]) => (
+        <div
+          key={clientId}
+          className={styles.cursorContainer}
+          style={{ left: `${position.x}px`, top: `${position.y}px` }}
+        >
+          <FontAwesomeIcon
+            key={clientId}
+            icon={faMouse}
+            className={styles.cursorIcon}
+            style={{ marginLeft: '5px', marginRight: '5px' }}
+          />
+          <p className={styles.cursorLabel}>{clientId}</p>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 export default CursorTracker;

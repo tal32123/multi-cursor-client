@@ -1,0 +1,19 @@
+.cursorContainer {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    transform: translate(-50%, -50%);
+    pointer-events: none;  /* Ensures the cursor elements don't interfere with mouse events */
+  }
+  
+  .cursorIcon {
+    color: whitesmoke;
+    font-size: 20px;
+  }
+  
+  .cursorLabel {
+    margin-left: 5px;
+    font-size: 12px;
+    color: whitesmoke;
+  }
+  
