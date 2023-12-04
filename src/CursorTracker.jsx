@@ -43,7 +43,7 @@ function useCursorTracker() {
   return cursorPositions;
 }
 
-function CursorTracker() {
+const CursorTracker = () => {
   const cursorPositions = useCursorTracker();
 
   return (
@@ -65,6 +65,6 @@ function CursorTracker() {
       ))}
     </div>
   );
-}
+};
 
 export default CursorTracker;
