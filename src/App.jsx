@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import CommentBox from "./comment-box/CommentBox";
 import CursorTracker from "./CursorTracker";
+import NewCommentBox from "./comment-box/NewCommentBox";
 
 const App = () => {
   const [comments, setComments] = useState([]);
@@ -78,25 +79,9 @@ const App = () => {
           onReplyAdded={addReply}
         />
       ))}
-      {newCommentPosition && (
-        <div
-          style={{
-            position: "absolute",
-            left: newCommentPosition.x,
-            top: newCommentPosition.y,
-          }}
-        >
-          <textarea id="newComment" placeholder="Add a comment..." />
-          <button
-            onClick={() =>
-              addComment(document.getElementById("newComment").value)
-            }
-          >
-            Submit
-          </button>
-        </div>
-      )}
-    </div>
+      {newCommentPosition && <NewCommentBox addComment={addComment} x={newCommentPosition.x} y={newCommentPosition.y}/>
+      }
+    </div> 
   );
 };
 
