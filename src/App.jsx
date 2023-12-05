@@ -11,7 +11,7 @@ const App = () => {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:3001/api/comments");
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/comments`);
         setComments(response.data);
       } catch (error) {
         console.error("Error fetching comments:", error);

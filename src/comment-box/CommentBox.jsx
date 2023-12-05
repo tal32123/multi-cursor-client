@@ -7,7 +7,7 @@ const CommentBox = ({ comment, onReplyAdded }) => {
 
   const submitReply = async () => {
     try {
-      const response = await axios.post(`http://127.0.0.1:3001/api/comments/${comment.id}/replies`, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/comments/${comment.id}/replies`, {
         comment: reply,
       });
       onReplyAdded(comment.id, response.data);

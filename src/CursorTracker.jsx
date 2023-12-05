@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMouse } from '@fortawesome/free-solid-svg-icons';
 import styles from './CursorTracker.module.css';
 
-const socket = io('http://localhost:3001');
+const socket = io(process.env.REACT_APP_API_URL);
 
 function useCursorTracker() {
   const [cursorPositions, setCursorPositions] = useState({});
