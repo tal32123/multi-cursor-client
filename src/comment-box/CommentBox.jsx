@@ -21,7 +21,7 @@ const CommentBox = ({ comment, onReplyAdded }) => {
   return (
     <div
       style={{
-        position: "relative",
+        position: "absolute",
         left: comment.x,
         top: comment.y,
         marginBottom: "10px",

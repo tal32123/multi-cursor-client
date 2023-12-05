@@ -29,11 +29,14 @@ const App = () => {
 
   const addComment = async (commentText) => {
     try {
-      const response = await axios.post("http://127.0.0.1:3001/api/comments", {
-        x: newCommentPosition.x,
-        y: newCommentPosition.y,
-        comment: commentText,
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/comments`,
+        {
+          x: newCommentPosition.x,
+          y: newCommentPosition.y,
+          comment: commentText,
+        }
+      );
       setComments([...comments, response.data]);
       setNewCommentPosition(null);
     } catch (error) {
@@ -66,7 +69,7 @@ const App = () => {
         backgroundColor: "#282c34",
       }}
     >
-            <CursorTracker/>
+      <CursorTracker />
 
       {comments.map((comment) => (
         <CommentBox
