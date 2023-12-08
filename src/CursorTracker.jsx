@@ -29,7 +29,9 @@ function useCursorTracker() {
     }, 100);
 
     const handleMouseMove = (event) => {
-      throttledEmit(event.clientX, event.clientY);
+      throttledEmit(
+        event.clientX + window.scrollX, 
+        event.clientY + window.scrollY);
     };
 
     document.addEventListener('mousemove', handleMouseMove);

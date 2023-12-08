@@ -62,15 +62,14 @@ const App = () => {
 
   return (
     <div
-      onClick={handleCanvasClick}
-      style={{
-        position: "relative",
-        width: "100%",
-        height: "100vh",
-        backgroundColor: "#282c34",
-      }}
-    >
-      <CursorTracker />
+    style={{
+      position: 'relative',
+      width: '800px', // Adjust as necessary
+      height: '600px', // Adjust as necessary
+      backgroundColor: '#282c34',
+    }}
+  >
+    <CursorTracker />
 
       {comments.map((comment) => (
         <CommentBox
